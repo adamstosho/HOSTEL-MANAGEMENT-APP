@@ -159,7 +159,7 @@ function loadStudentTable() {
   deleteBtns.forEach((btn, index) => {
     btn.addEventListener('click', () => {
       // Handle delete functionality
-      if (confirm(`Are you sure you want to delete #{sampleStudents[index].name}?`)) {
+      if (confirm(`Are you sure you want to delete ${sampleStudents[index].name}?`)) {
         alert(`Student ${sampleStudents[index].name} deleted`);
       }
     });
@@ -179,7 +179,7 @@ function loadRoomGrid() {
                     <p class="room-type">${room.type}</p>
                     <p class="room-price">${room.price}/year</p>
                     <p class="room-status">${room.status}</p>
-                </div>       
+                </div>     
             </div>
         `;
     roomGrid.innerHTML += roomCard;
