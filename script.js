@@ -91,7 +91,59 @@ function setupEventListeners() {
   saveStudentBtn.addEventListener('click', saveStudent);
   saveRoomBtn.addEventListener('click', saveRoom);
 
+// Search functionality
+const searchInput = document.querySelector('.search-bar input');
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase();
 
+  // Filter students
+  const studentRows = document.querySelectorAll('#studentTableBody tr');
+  studentRows.forEach(row => {
+    const studentName = row.children[1].textContent.toLowerCase();
+    const studentRoom = row.children[2].textContent.toLowerCase();
+    if (studentName.includes(query) || studentRoom.includes(query)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+
+  // Filter rooms
+  const roomCards = document.querySelectorAll('.room-card');
+  roomCards.forEach(card => {
+    const roomNumber = card.querySelector('.room-number').textContent.toLowerCase();
+    const roomType = card.querySelector('.room-type').textContent.toLowerCase();
+    if (roomNumber.includes(query) || roomType.includes(query)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Filter payments
+  const paymentRows = document.querySelectorAll('#paymentTableBody tr');
+  paymentRows.forEach(row => {
+    const paymentStudent = row.children[1].textContent.toLowerCase();
+    const paymentRoom = row.children[2].textContent.toLowerCase();
+    if (paymentStudent.includes(query) || paymentRoom.includes(query)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+
+  // Filter complaints
+  const complaintRows = document.querySelectorAll('#complaintTableBody tr');
+  complaintRows.forEach(row => {
+    const complaintStudent = row.children[1].textContent.toLowerCase();
+    const complaintIssue = row.children[3].textContent.toLowerCase();
+    if (complaintStudent.includes(query) || complaintIssue.includes(query)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
 
   // Dark mode toggle
   darkModeToggle.addEventListener('change', toggleDarkMode);
@@ -149,18 +201,29 @@ function loadStudentTable() {
   const editBtns = document.querySelectorAll('.edit-btn');
   const deleteBtns = document.querySelectorAll('.delete-btn');
 
-  editBtns.forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-      // Handle edit functionality
-      alert(`Edit student: ${sampleStudents[index].name}`);
+  editBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      const row = event.target.closest('tr');
+      const studentId = parseInt(row.children[0].textContent, 10);
+      const student = sampleStudents.find(s => s.id === studentId);
+      if (student) {
+        alert(`Edit student: ${student.name}`);
+        // Add your edit logic here
+      }
     });
   });
 
-  deleteBtns.forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-      // Handle delete functionality
-      if (confirm(`Are you sure you want to delete ${sampleStudents[index].name}?`)) {
-        alert(`Student ${sampleStudents[index].name} deleted`);
+  deleteBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      const row = event.target.closest('tr');
+      const studentId = parseInt(row.children[0].textContent, 10);
+      const studentIndex = sampleStudents.findIndex(s => s.id === studentId);
+      if (studentIndex !== -1) {
+        if (confirm(`Are you sure you want to delete ${sampleStudents[studentIndex].name}?`)) {
+          sampleStudents.splice(studentIndex, 1);
+          loadStudentTable(); // Refresh the table after deletion
+          alert(`Student deleted successfully!`);
+        }
       }
     });
   });
@@ -232,6 +295,8 @@ function loadComplaintTable() {
     tableBody.innerHTML += row;
   });
 }
+
+
 
 // To determine what color class to assign to a student's status, i declared a function using switch 
 function getStatusClass(status) {
