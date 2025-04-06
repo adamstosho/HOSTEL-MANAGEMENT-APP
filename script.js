@@ -177,7 +177,7 @@ function loadRoomGrid() {
                 <div class="room-number">${room.id}</div>
                 <div class="room-details">
                     <p class="room-type">${room.type}</p>
-                    <p class="room-price">${room.price}/month</p>
+                    <p class="room-price">${room.price}/year</p>
                     <p class="room-status">${room.status}</p>
                 </div>       
             </div>
